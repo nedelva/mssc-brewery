@@ -19,30 +19,30 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getCustomer(@PathVariable UUID id) {
-        return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
+    @GetMapping("/{customerId}")
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable("customerId")  UUID customerId){
+
+        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> handlePost(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity handlePost(CustomerDto customerDto){
         CustomerDto savedDto = customerService.save(customerDto);
-        HttpHeaders headers = ResponseEntity.EMPTY.getHeaders();
-        headers.setLocation(URI.create("/api/v1/customer" + savedDto.getId().toString()));
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/api/v1/customer/" + savedDto.getId().toString());
+
+        return new ResponseEntity(httpHeaders, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> handleUpdate(@PathVariable UUID id, @RequestBody CustomerDto customerDto) {
-        customerService.update(id, customerDto);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/{customerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleUpdate(@PathVariable("customerId") UUID customerId, CustomerDto customerDto){
+        customerService.update(customerId, customerDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CustomerDto> handleDelete(@PathVariable UUID id) {
-        customerService.delete(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{customerId}")
+    public void deleteById(@PathVariable("customerId")  UUID customerId){
+        customerService.delete(customerId);
     }
 }
