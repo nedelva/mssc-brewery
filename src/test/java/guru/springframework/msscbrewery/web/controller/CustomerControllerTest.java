@@ -62,7 +62,7 @@ public class CustomerControllerTest {
         CustomerDto customerDto = johnDoe;
         customerDto.setId(null);
         CustomerDto savedDto = CustomerDto.builder().id(UUID.randomUUID()).name("New Customer").build();
-        String customerJson = objectMapper.writeValueAsString(customerDto);
+        String customerJson = objectMapper.writeValueAsString(savedDto);
 
         given(customerService.save(any())).willReturn(savedDto);
 
@@ -70,6 +70,8 @@ public class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(customerJson))
                 .andExpect(status().isCreated());
+
+        then(customerService).should().save(eq(savedDto));
 
     }
 
@@ -87,7 +89,7 @@ public class CustomerControllerTest {
                 .content(custDtoJson))
                 .andExpect(status().isNoContent());
 
-        then(customerService).should().update(eq(uuid), any());
+        then(customerService).should().update(eq(uuid), eq(customerDto));
     }
 
     @Test
