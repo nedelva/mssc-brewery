@@ -1,26 +1,20 @@
-package guru.springframework.msscbrewery.web.model;
+package guru.springframework.msscbrewery.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 /**
- * Created by jt on 2019-04-21.
+ * Created by jt on 2019-05-25.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerDto {
-
+public class Customer {
     private UUID id;
-
-    @NotBlank
-    @Size(min = 3, max = 100)
     private String name;
 }

@@ -1,34 +1,40 @@
 package guru.springframework.msscbrewery.services;
 
 import guru.springframework.msscbrewery.web.model.CustomerDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Created by jt on 2019-04-21.
+ */
+@Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService {
     @Override
-    public CustomerDto getCustomerById(UUID id) {
+    public CustomerDto getCustomerById(UUID customerId) {
         return CustomerDto.builder()
-                .name("John Doe")
-                .id(UUID.randomUUID()).build();
+                .id(UUID.randomUUID())
+                .name("Joe Buck")
+                .build();
     }
 
     @Override
-    public CustomerDto save(CustomerDto customerDto) {
+    public CustomerDto saveNewCustomer(CustomerDto customerDto) {
         return CustomerDto.builder()
-                .name(customerDto.getName())
                 .id(UUID.randomUUID())
                 .build();
     }
 
     @Override
-    public void update(UUID id, CustomerDto customerDto) {
-        //todo
+    public void updateCustomer(UUID customerId, CustomerDto customerDto) {
+        //todo impl
+        log.debug("Updating....");
     }
 
     @Override
-    public void delete(UUID id) {
-        //todo
+    public void deleteById(UUID customerId) {
+        log.debug("Deleting.... ");
     }
 }
