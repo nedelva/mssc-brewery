@@ -64,14 +64,14 @@ public class CustomerControllerTest {
         CustomerDto savedDto = CustomerDto.builder().id(UUID.randomUUID()).name("New Customer").build();
         String customerJson = objectMapper.writeValueAsString(savedDto);
 
-        given(customerService.save(any())).willReturn(savedDto);
+        given(customerService.saveNewCustomer(any())).willReturn(savedDto);
 
         mockMvc.perform(post("/api/v1/customer/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(customerJson))
                 .andExpect(status().isCreated());
 
-        then(customerService).should().save(eq(savedDto));
+        then(customerService).should().saveNewCustomer(eq(savedDto));
 
     }
 
@@ -89,7 +89,7 @@ public class CustomerControllerTest {
                 .content(custDtoJson))
                 .andExpect(status().isNoContent());
 
-        then(customerService).should().update(eq(uuid), eq(customerDto));
+        then(customerService).should().updateCustomer(eq(uuid), eq(customerDto));
     }
 
     @Test
@@ -100,6 +100,6 @@ public class CustomerControllerTest {
         mockMvc.perform(delete("/api/v1/customer/"+ uuid))
                 .andExpect(status().isOk());
 
-        then(customerService).should().delete(uuid);
+        then(customerService).should().deleteById(uuid);
     }
 }
